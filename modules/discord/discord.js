@@ -1,7 +1,8 @@
 var request = require('request');
 var factory = require('../kickstarter/factory.js');
 
-var discordURL = "REDACTED";
+var discordURL = "https:\/\/discordapp.com/api/webhooks/359120400610885643/nQAbfC0dP7_fuLCgIT8ulYdt5_BUdvQlhMOP0t-QlptJ63K8G-byL2WXvH8JanfEHehx";
+// var discordURL = "https://discordapp.com/api/webhooks/344692221746085889/dcGK8rkhvkfrdtkJUBcRZSiDTQWEPcjR0vD__PzNLJhmkp_vw1CJBcCLZRmG97ccjBnv";
 var url_prefix = factory.url_prefix;
 
 exports.Post = function(discordUsername, discordAvatar, discordContent){
@@ -199,8 +200,6 @@ exports.NewUpdateMessageIndex = function(passed_json, project_index, update_inde
             }
         ]
     }
-
-    //console.log(JSON.stringify(json_to_send));
 
     request({
         method: 'POST',

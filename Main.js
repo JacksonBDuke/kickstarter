@@ -3,12 +3,6 @@ var kickstarter = require('./modules/kickstarter/kickstarter');
 var utils = require('./modules/utils');
 var discord = require('./modules/discord/discord');
 
-//Minutes
-var schedule = 1;
-
-//Change from minutes into miliseconds
-schedule = schedule * 60 * 1000;
-
 var url_created = 'https:\/\/www.kickstarter.com/profile/froggodgames/created';
 var JSON_OLD;
 
@@ -19,7 +13,6 @@ var JSON_OLD;
  */
 function getCurrentProjectList(url_created, cb){
     kickstarter.go(url_created, function(JSON_BLOB_PROJECTS){
-        //console.log("In getCurrentProjectList, about to callback");
         cb(JSON_BLOB_PROJECTS);
     });
 }
@@ -35,19 +28,12 @@ function loopThrough(url_created, cb){
             //Compare all
             console.log("File found... comparing contents of old to new");
 
-            //discord.NewCommentMessageIndex(JSON_CURRENT, 0, 0);
-            //discord.NewUpdateMessageIndex(JSON_CURRENT, 0, 0);
-
             //Read contents of old JSON file to compare
             fs.readFile(__dirname + "/ks_projects.json", function(err, data){
                 if(!err){
                     //console.log(JSON.parse(data));
                     iterateThroughProjects(JSON_CURRENT, JSON.parse(data), function(result){
-                        //fs.close();
-                        //console.log("Done with iterateThroughProjects");
                         cb(JSON_CURRENT);
-                        //console.log("Overwriting old data.");
-                        //utils.writeFile(JSON_CURRENT, "/ks_projects", __dirname);
                     });
                 }
                 else{
@@ -92,24 +78,15 @@ function checkIfFileExists(file){
  * @param {*} cb 
  */
 function iterateThroughProjects(JSON_NEW, JSON_OLD, cb){
-    //Get first old item.
-        //Iterate through new until old is found, putting all items onto stack until then.
 
-    
-    //Go through project list
-
-    //console.log("Inside iterateThroughProjects, before loop");
     
     for(var i = 0; i < JSON_NEW.projects.length; ++i){
-        //console.log(i);
         var projectIndex = indexOfProjectSlug(JSON_OLD.projects, JSON_NEW.projects[i].slug);
-        //console.log("ProjectIndex: " + projectIndex);
         if(projectIndex > -1){
         //Project exists already 
             //Comments?
             for(var j = 0; j < JSON_NEW.projects[i].comments.length; ++j){
                 var commentIndex = indexOfCommentTime(JSON_OLD.projects[projectIndex].comments, JSON_NEW.projects[i].comments[j].comment_time);
-                //console.log("CommentIndex: " + commentIndex);
                 if(commentIndex == -1){
                     //Send comment update
                     discord.NewCommentMessageIndex(JSON_NEW, i, j);
@@ -135,11 +112,9 @@ function iterateThroughProjects(JSON_NEW, JSON_OLD, cb){
 
         //If we've looped through all projects, callback.
         if(i == (JSON_NEW.projects.length - 1)){
-            //console.log("i = " + i + "\niterateThroughProjects is doing callback");
             cb();
         }
     }
-    //discord.NewProjectMessageIndex(JSON_NEW, 0);
 }
 
 /**

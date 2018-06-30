@@ -17,7 +17,6 @@ exports.getKickstarterBlob = function(ks_url, cb){
     var temp_projects = [];
     var options = factory.getOptions(ks_url);
     request(options, function(err, resp, body){
-        //console.log("Code " + resp.statusCode);
         var $ = cheerio.load(body);
         var dataProjectsBlob = $("#react-profile-created").attr("data-projects");
         var projectsJSON = JSON.parse(dataProjectsBlob);
@@ -25,7 +24,6 @@ exports.getKickstarterBlob = function(ks_url, cb){
         kickstarterAvatar = kickstarterAvatar.replace("amp;", "");
 
         iterateThroughProjectContent(projectsJSON, function(temp_projects){
-            //console.log("Number of projects: " + temp_projects.length);
             ks_blob = {
                 "creator": projectsJSON[0].creator.name,
                 "slug": projectsJSON[0].creator.slug,

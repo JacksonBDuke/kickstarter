@@ -42,12 +42,6 @@ function iterateThroughCommentContent(blob, cb){
         var commentURL = blob(this).find('.grey-dark').attr('href');
         //Add url_prefix to construct full URL of the comment.
         commentURL = url_prefix + commentURL;
-        //Date-Time in "Y-M-DT00:00:00-00:00" format where "-00:00" is offset from GMT
-        var commentDateTimeItem = blob(this).find('data').attr('data-value');
-        //For some reason this specific Date-Time item was enclosed in quotes, so get rid of quotes.
-        commentDateTimeItem = commentDateTimeItem.replace(/\"/g, "");
-        //Change Date-Time format to Unix milliseconds.
-        var commentTime = factory.getTimeFromDate(commentDateTimeItem);
         //The avatar image used by the commentor.
         var commentAvatar = blob(this).find('img').attr('src');
         var commentAuthorItem = blob(this).find('.author');
@@ -72,7 +66,6 @@ function iterateThroughCommentContent(blob, cb){
             "name": commentAuthor,
             "avatar": commentAvatar,
             "comment_id": commentID,
-            "comment_time": commentTime,
             "comment_url": commentURL,
             "comment_blurb": commentText
         }
