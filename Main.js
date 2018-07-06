@@ -1,9 +1,29 @@
-var fs = require('fs');
-var kickstarter = require('./modules/kickstarter/kickstarter');
-var utils = require('./modules/utils');
-var discord = require('./modules/discord/discord');
+const fs = require('fs');
+const yargs = require('yargs');
+const kickstarter = require('./modules/kickstarter/kickstarter');
+const utils = require('./modules/utils');
+const discord = require('./modules/discord/discord');
 
-var url_created = 'https:\/\/www.kickstarter.com/profile/froggodgames/created';
+const argv = yargs
+    .options({
+        w: {
+            demand: true,
+            alias: 'wurl',
+            describe: 'Webhook URL of Discord server.',
+            string: true
+        },
+        a: {
+            demand: true,
+            alias: 'address',
+            describe: 'URL of Kickstarter profile to track.',
+            string: true
+        }
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
+
+const url_created = argv.a + '/created';
 var JSON_OLD;
 
 /**
@@ -31,7 +51,6 @@ function loopThrough(url_created, cb){
             //Read contents of old JSON file to compare
             fs.readFile(__dirname + "/ks_projects.json", function(err, data){
                 if(!err){
-                    //console.log(JSON.parse(data));
                     iterateThroughProjects(JSON_CURRENT, JSON.parse(data), function(result){
                         cb(JSON_CURRENT);
                     });
@@ -49,7 +68,7 @@ function loopThrough(url_created, cb){
 
             //Send initialize webhook.
             // Name, Avatar, Link to profile, Initialize message
-            discord.InitializeMessage(JSON_CURRENT.creator, JSON_CURRENT.avatar, "https://www.kickstarter.com/profile/" + JSON_CURRENT.slug, JSON_CURRENT.creator + "'s file has been created. You should now get updates for this kickstarter profile!");
+            discord.InitializeMessage(argv.w, JSON_CURRENT.creator, JSON_CURRENT.avatar, argv.a, JSON_CURRENT.creator + "'s file has been created. You should now get updates for this kickstarter profile!");
         }
     });
 }
@@ -89,24 +108,23 @@ function iterateThroughProjects(JSON_NEW, JSON_OLD, cb){
                 var commentIndex = indexOfCommentTime(JSON_OLD.projects[projectIndex].comments, JSON_NEW.projects[i].comments[j].comment_time);
                 if(commentIndex == -1){
                     //Send comment update
-                    discord.NewCommentMessageIndex(JSON_NEW, i, j);
+                    discord.NewCommentMessageIndex(argv.w, JSON_NEW, i, j);
                     console.log("\tNew comment: project " + i + " comment " + j);
                 }
             }
             //Updates?
             for(var k = 0; k < JSON_NEW.projects[i].updates.length; ++k){
                 var updateIndex = indexOfUpdateTime(JSON_OLD.projects[projectIndex].updates, JSON_NEW.projects[i].updates[k].update_time);
-                //console.log("UpdateIndex: " + updateIndex);
                 if(updateIndex == -1){
                     //Send comment update
-                    discord.NewUpdateMessageIndex(JSON_NEW, i, k);
+                    discord.NewUpdateMessageIndex(argv.w, JSON_NEW, i, k);
                     console.log("\tNew update: project " + i + " update " + k);
                 }
             }
         }
         else{
             //New project
-            discord.NewProjectMessageIndex(JSON_NEW, i);
+            discord.NewProjectMessageIndex(argv.w, JSON_NEW, i);
             console.log("\tNew project");
         }
 

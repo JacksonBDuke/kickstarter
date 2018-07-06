@@ -1,10 +1,9 @@
 var request = require('request');
 var factory = require('../kickstarter/factory.js');
 
-var discordURL = "REDACTED";
 var url_prefix = factory.url_prefix;
 
-exports.Post = function(discordUsername, discordAvatar, discordContent){
+exports.Post = function(discordURL, discordUsername, discordAvatar, discordContent){
     request({
         method: 'POST',
         url: discordURL,
@@ -17,7 +16,7 @@ exports.Post = function(discordUsername, discordAvatar, discordContent){
 };
 
 // Name, Avatar, Link to profile, Initialize message
-exports.InitializeMessage = function(passed_name, avatar_url, profile_url, message){
+exports.InitializeMessage = function(discordURL, passed_name, avatar_url, profile_url, message){
     request({
         "method": 'POST',
         "url": discordURL,
@@ -41,7 +40,7 @@ exports.InitializeMessage = function(passed_name, avatar_url, profile_url, messa
     })
 }
 
-exports.Pass = function(passed_json){
+exports.Pass = function(discordURL, passed_json){
     request({
         "method": 'POST',
         "url": discordURL,
@@ -66,7 +65,7 @@ exports.Pass = function(passed_json){
     })
 }
 
-exports.NewProjectMessageIndex = function(passed_json, project_index){
+exports.NewProjectMessageIndex = function(discordURL, passed_json, project_index){
     var project_url = url_prefix + "/projects/" + passed_json.slug + "/" + passed_json.projects[project_index].slug + "/"
     var theEmbeds = [
         {
@@ -134,7 +133,7 @@ exports.NewProjectMessageIndex = function(passed_json, project_index){
     });
 }
 
-exports.NewCommentMessageIndex = function(passed_json, project_index, comment_index){
+exports.NewCommentMessageIndex = function(discordURL, passed_json, project_index, comment_index){
     var json_to_send = {
         "embeds":[
             {
@@ -158,28 +157,10 @@ exports.NewCommentMessageIndex = function(passed_json, project_index, comment_in
         method: 'POST',
         url: discordURL,
         json:json_to_send
-        /*{
-            embeds:[
-                {
-                    title: "New contributor comment on " + passed_json.projects[project_index].name,
-                    url: url_prefix + "/projects/" + passed_json.slug + "/" + passed_json.projects[project_index].slug + "/",
-                    author:{
-                        name: passed_json.projects[project_index].comments[comment_index].name,
-                        icon_url: passed_json.projects[project_index].comments[comment_index].avatar
-                    },
-                    fields:[
-                        {
-                            name: passed_json.projects[project_index].comments[comment_index].name,
-                            value: passed_json.projects[project_index].comments[comment_index].comment_blurb
-                        }
-                    ]
-                }
-            ]
-        }*/
     });
 }
 
-exports.NewUpdateMessageIndex = function(passed_json, project_index, update_index){
+exports.NewUpdateMessageIndex = function(discordURL, passed_json, project_index, update_index){
     var json_to_send = {
         "embeds":[
             {
@@ -207,7 +188,7 @@ exports.NewUpdateMessageIndex = function(passed_json, project_index, update_inde
     });
 }
 
-exports.NewProjectMessage = function(passed_json){
+exports.NewProjectMessage = function(discordURL, passed_json){
     request({
         "method": 'POST',
         "url": discordURL,
@@ -231,7 +212,7 @@ exports.NewProjectMessage = function(passed_json){
     });
 }
 
-exports.NewCommentMessage = function(passed_json){
+exports.NewCommentMessage = function(discordURL, passed_json){
     request({
         "method": 'POST',
         "url": discordURL,
@@ -256,7 +237,7 @@ exports.NewCommentMessage = function(passed_json){
     });
 }
 
-exports.NewUpdateMessage = function(passed_json){
+exports.NewUpdateMessage = function(discordURL, passed_json){
     request({
         "method": 'POST',
         "url": discordURL,
@@ -281,7 +262,7 @@ exports.NewUpdateMessage = function(passed_json){
     });
 }
 
-exports.NewPreformattedMessage = function(passed_json){
+exports.NewPreformattedMessage = function(discordURL, passed_json){
     request({
         "method": 'POST',
         "url": discordURL,

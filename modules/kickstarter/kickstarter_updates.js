@@ -75,6 +75,5 @@ function iterateThroughUpdateContent(blob, cb){
             updates_blob.push(updatePart);
         }
     });
-
     cb(updates_blob);
 }
