@@ -1,8 +1,8 @@
 const fs = require('fs');
 const yargs = require('yargs');
-const kickstarter = require('./modules/kickstarter/kickstarter');
-const utils = require('./modules/utils');
-const discord = require('./modules/discord/discord');
+const kickstarter = require('./modules/kickstarter/kickstarter.js');
+const utils = require('./modules/utils.js');
+const discord = require('./modules/discord/discord.js');
 
 const argv = yargs
     .options({
@@ -73,18 +73,12 @@ function loopThrough(url_created, cb){
     });
 }
 
-/**
- * Was originally going to use setInterval() to run the program on a set time, but probably going to go with
- * chronotab in Linux instead.
- */
-//setInterval(function(){
-    loopThrough(url_created, function(result){
-        console.log("\tOverwriting old data.");
-        utils.writeFile(result, "/ks_projects", __dirname, function(result){
-            console.log(result);
-        });
+loopThrough(url_created, function(result){
+    console.log("\tOverwriting old data.");
+    utils.writeFile(result, "/ks_projects", __dirname, function(result){
+        console.log(result);
     });
-//}, schedule);
+});
 
 function checkIfFileExists(file){
     return fs.existsSync(file);

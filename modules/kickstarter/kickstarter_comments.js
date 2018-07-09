@@ -1,6 +1,6 @@
 var request = require('request');
 var cheerio = require('cheerio');
-var factory = require('./factory');
+var factory = require('./factory.js');
 
 var url_prefix = factory.url_prefix;
 var limit = factory.comment_limit;
