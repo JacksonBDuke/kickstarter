@@ -105,7 +105,7 @@ function iterateThroughProjects(JSON_NEW, JSON_OLD, cb){
         //Project exists already 
             //Comments?
             for(var j = 0; j < JSON_NEW.projects[i].comments.length; ++j){
-                var commentIndex = indexOfCommentTime(JSON_OLD.projects[projectIndex].comments, JSON_NEW.projects[i].comments[j].comment_time);
+                var commentIndex = indexOfCommentID(JSON_OLD.projects[projectIndex].comments, JSON_NEW.projects[i].comments[j].comment_id);
                 if(commentIndex == -1){
                     //Send comment update
                     discord.NewCommentMessageIndex(argv.w, JSON_NEW, i, j);
@@ -166,14 +166,14 @@ function indexOfUpdateTime(jsonObject, element, cb){
 }
 
 /**
- * Find the index of sent project.comments[X].comment_time, if it exists. If not, return -1.
+ * Find the ID of sent project.comments[X].comment_id, if it exists. If not, return -1.
  * @param {*} jsonObject The passed projects.comments array.
  * @param {*} element Theh comment_time item to match.
  */
-function indexOfCommentTime(jsonObject, element){
+function indexOfCommentID(jsonObject, element){
     var ret = -1;
     for(var i = 0; i < jsonObject.length; ++i){
-        if(jsonObject[i].comment_time == element){
+        if(jsonObject[i].comment_id == element){
             return i;
         }
     }
