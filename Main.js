@@ -9,13 +9,13 @@ const argv = yargs
         w: {
             demand: true,
             alias: 'wurl',
-            describe: 'Webhook URL of Discord server.',
+            describe: 'Webhook URL of Discord server. Any messages sent using the discord.js module will use this URL to send POST requests.',
             string: true
         },
         a: {
             demand: true,
             alias: 'address',
-            describe: 'URL of Kickstarter profile to track.',
+            describe: 'URL of Kickstarter profile to track. This should be a link to the profile itself, not a project page.',
             string: true
         }
     })
