@@ -1,5 +1,5 @@
-var request = require('request');
-var factory = require('../kickstarter/factory.js');
+const request = require('request');
+const factory = require('../kickstarter/factory.js');
 
 var url_prefix = factory.url_prefix;
 

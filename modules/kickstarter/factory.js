@@ -1,4 +1,4 @@
-var fs = require('fs');
+const fs = require('fs');
 
 exports.url_prefix = 'https:\/\/www.kickstarter.com';
 exports.project_limit = 5;

@@ -1,7 +1,7 @@
-var ks_projects = require('./kickstarter_projects.js');
-var ks_comments = require('./kickstarter_comments.js');
-var ks_updates = require('./kickstarter_updates.js');
-var factory = require('./factory.js');
+const ks_projects = require('./kickstarter_projects.js');
+const ks_comments = require('./kickstarter_comments.js');
+const ks_updates = require('./kickstarter_updates.js');
+const factory = require('./factory.js');
 
 var url_prefix = factory.url_prefix;
 var counter = 0;
